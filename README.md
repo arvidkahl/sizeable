@@ -1,4 +1,4 @@
-# Sizeable
+# Sizeable ![Build status](https://travis-ci.org/arvidkahl/sizeable.svg)
 
 An Elixir library to make file sizes human-readable.
 
