@@ -23,7 +23,7 @@ defmodule Sizeable.Mixfile do
       maintainers: ["Arvid Kahl"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/arvidkahl/sizeable"},
-      files: ["lib", "test", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],      
+      files: ["lib", "test", "mix.exs", "README*", "LICENSE*"],      
     ]
   end
 
