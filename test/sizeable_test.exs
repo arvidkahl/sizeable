@@ -119,6 +119,7 @@ defmodule SizeableTest do
 
   @kilobit 500
   @kilobit_float 500.0
+  @kilobit_string "500.0"
   @kilobyte 1024
   @neg -1024
   @zero 0
@@ -132,6 +133,10 @@ defmodule SizeableTest do
 
   test "500 B float" do
     assert Sizeable.filesize(@kilobit_float) == "500 B"
+  end
+
+  test "500 B string" do
+    assert Sizeable.filesize(@kilobit_string) == "500 B"
   end
 
   test "500 B bits" do
