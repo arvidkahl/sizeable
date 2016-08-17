@@ -3,7 +3,7 @@ defmodule Sizeable.Mixfile do
 
   def project do
     [app: :sizeable,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.3",
      description: "An Elixir library to make File Sizes human-readable",
      package: package(),
@@ -23,7 +23,7 @@ defmodule Sizeable.Mixfile do
       maintainers: ["Arvid Kahl"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/arvidkahl/sizeable"},
-      files: ["lib", "test", "mix.exs", "README*", "LICENSE*"],      
+      files: ["lib", "test", "mix.exs", "README*", "LICENSE*"],
     ]
   end
 
