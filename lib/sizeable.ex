@@ -7,6 +7,9 @@ defmodule Sizeable do
   @bits ["b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb"]
 	@bytes ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
 
+  @doc """
+  see `filesize(value, options)`
+  """
   def filesize(value) do
     filesize(value, %{})
   end
@@ -32,6 +35,27 @@ defmodule Sizeable do
     Enum.join([0,unit], spacer)
   end
 
+  @doc """
+  Returns a human-readable string for the given numeric value.
+
+  ## Arguments:
+
+  - `value` (Integer/Float/String) representing the filesize to be converted
+  - `options` (Struct) representing the options to determine base, rounding and units
+
+  ## Options
+
+  - `bits`: `true` if the result should be in bits, `false` if in bytes. Defaults to `false`
+  - `spacer`: the string that should be between the number and the unit. Defaults to `" "`
+  - `round`: the precision that the number should be rounded down to. Defaults to `2`.
+  - `base`: the base for exponent calculation. `2` for binary-based numbers, any other Integer can be used. Defaults to `2`
+
+  ## Example - Get bit-sized filesize for 1024 byte
+
+      Sizeable.filesize(1024, %{bits:true})
+      "8 Kb"
+
+  """
   def filesize(value, options) do
     bits = Map.get(options, :bits, false)
     base = Map.get(options, :base, 2)
