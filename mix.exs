@@ -6,8 +6,7 @@ defmodule Sizeable.Mixfile do
      version: "0.1.0",
      elixir: "~> 1.3",
      description: "An Elixir library to make File Sizes human-readable",
-     licenses: ["MIT"],
-     maintainers: ["Arvid Kahl"],
+     package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -18,6 +17,14 @@ defmodule Sizeable.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger]]
+  end
+
+  defp package do
+    [
+      maintainers: ["Arvid Kahl"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/arvidkahl/sizeable"},
+    ]
   end
 
   # Dependencies can be Hex packages:
