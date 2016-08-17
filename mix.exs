@@ -3,9 +3,9 @@ defmodule Sizeable.Mixfile do
 
   def project do
     [app: :sizeable,
-     version: "0.1.1",
+     version: "0.1.2",
      elixir: "~> 1.3",
-     description: "An Elixir library to make File Sizes human-readable",
+     description: "An Elixir library to make file sizes human-readable.",
      package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
