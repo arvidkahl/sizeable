@@ -10,7 +10,7 @@ The package can be installed as:
 
     ```elixir
     def deps do
-      [{:sizeable, "~> 0.1.2"}]
+      [{:sizeable, "~> 0.1.3"}]
     end
     ```
 
@@ -40,7 +40,12 @@ Returns a human-readable string for the given numeric value.
 - `round`: the precision that the number should be rounded down to. Defaults to `2`.
 - `base`: the base for exponent calculation. `2` for binary-based numbers, any other Integer can be used. Defaults to `2`.
 
-#### Example - Get bit-sized file size for 1024 byte
+#### Example - Get file size for 1024 bytes
+
+    Sizeable.filesize(1024)
+    "1 KB"
+
+#### Example - Get bit-sized file size for 1024 bytes
 
     Sizeable.filesize(1024, %{bits:true})
     "8 Kb"

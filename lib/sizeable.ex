@@ -15,8 +15,10 @@ defmodule Sizeable do
   end
 
   def filesize(value,options) when is_bitstring(value) do
-    {parsed, _rem} = value |> Integer.parse()
-    filesize(parsed, options)
+    case value |> Integer.parse() do
+      {parsed, _rem} -> filesize(parsed, options)
+      :error -> raise "Value is not a Number"
+    end
   end
 
   def filesize(value, options) when is_integer(value) do
@@ -56,7 +58,8 @@ defmodule Sizeable do
       "8 Kb"
 
   """
-  def filesize(value, options) do
+
+  def filesize(value, options) when (is_float(value) and is_map(options)) do
     bits = Map.get(options, :bits, false)
     base = Map.get(options, :base, 2)
     spacer = Map.get(options, :spacer, " ")
@@ -101,5 +104,14 @@ defmodule Sizeable do
         Enum.join([result,unit], spacer)
     end
   end
+
+  def filesize(_value, options) when is_map(options) do
+    raise "Invalid Value"
+  end
+
+  def filesize(_value, _options) do
+    raise "Invalid Options Argument"
+  end
+
 
 end
