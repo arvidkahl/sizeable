@@ -83,10 +83,7 @@ defmodule Sizeable do
     result = Float.round(value / :math.pow(ceil, exponent), base)
 
     result = if Float.floor(result) == result do
-      {result, _rem} = result
-        |> Float.to_string()
-        |> Integer.parse()
-      result
+      result = round result
     else
       result
         |> Float.round(round)
