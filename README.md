@@ -10,7 +10,7 @@ The package can be installed as:
 
     ```elixir
     def deps do
-      [{:sizeable, "~> 0.1.4"}]
+      [{:sizeable, "~> 0.1.5"}]
     end
     ```
 
