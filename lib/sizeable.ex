@@ -83,10 +83,10 @@ defmodule Sizeable do
     result = Float.round(value / :math.pow(ceil, exponent), base)
 
     result = if Float.floor(result) == result do
-      result = round result
+      round result
     else
       result
-        |> Float.round(round)
+      |> Float.round(round)
     end
 
     {:ok, unit} = case bits do
