@@ -4,6 +4,8 @@ defmodule Sizeable do
   A library to make file sizes human-readable
   """
 
+  require Logger
+
   @bits ["b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb"]
 	@bytes ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
 
@@ -11,7 +13,12 @@ defmodule Sizeable do
   see `filesize(value, options)`
   """
   def filesize(value) do
-    filesize(value, %{})
+    filesize(value, [])
+  end
+
+  def filesize(value, options) when is_map(options) do
+    Logger.warn("Using maps for options is deprecated. Please use Keyword Lists.")
+    filesize(value, Map.to_list(options))
   end
 
   def filesize(value,options) when is_bitstring(value) do
@@ -27,8 +34,8 @@ defmodule Sizeable do
   end
 
   def filesize(0.0, options) do
-    spacer = Map.get(options, :spacer, " ")
-    bits = Map.get(options, :bits, false)
+    spacer = Keyword.get(options, :spacer, " ")
+    bits = Keyword.get(options, :bits, false)
 
     {:ok, unit} = case bits do
       true -> Enum.fetch(@bits, 0)
@@ -54,16 +61,15 @@ defmodule Sizeable do
 
   ## Example - Get bit-sized file size for 1024 byte
 
-      Sizeable.filesize(1024, %{bits:true})
+      Sizeable.filesize(1024, [bits: true])
       "8 Kb"
-
   """
 
-  def filesize(value, options) when (is_float(value) and is_map(options)) do
-    bits = Map.get(options, :bits, false)
-    base = Map.get(options, :base, 2)
-    spacer = Map.get(options, :spacer, " ")
-    round = Map.get(options, :round, 2)
+  def filesize(value, options) when (is_float(value) and is_list(options)) do
+    bits = Keyword.get(options, :bits, false)
+    base = Keyword.get(options, :base, 2)
+    spacer = Keyword.get(options, :spacer, " ")
+    round = Keyword.get(options, :round, 2)
 
     ceil = if base > 2 do 1000 else 1024 end
     neg = value < 0
@@ -102,13 +108,12 @@ defmodule Sizeable do
     end
   end
 
-  def filesize(_value, options) when is_map(options) do
+  def filesize(_value, options) when is_list(options) do
     raise "Invalid Value"
   end
 
   def filesize(_value, _options) do
     raise "Invalid Options Argument"
   end
-
 
 end

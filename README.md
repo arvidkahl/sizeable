@@ -10,7 +10,7 @@ The package can be installed as:
 
     ```elixir
     def deps do
-      [{:sizeable, "~> 0.1.5"}]
+      [{:sizeable, "~> 1.0.0"}]
     end
     ```
 
@@ -24,7 +24,7 @@ The package can be installed as:
 
 ## Usage
 
-### `Sizeable.filesize(value, options \\ %{})`
+### `Sizeable.filesize(value, options \\ [])`
 
 Returns a human-readable string for the given numeric value.
 
@@ -33,7 +33,7 @@ Returns a human-readable string for the given numeric value.
 - `value` (Integer/Float/String) representing the filesize to be converted.
 - `options` (Struct) representing the options to determine base, rounding and units.
 
-#### Options
+#### Options:
 
 - `bits`: `true` if the result should be in bits, `false` if in bytes. Defaults to `false`.
 - `spacer`: the string that should be between the number and the unit. Defaults to `" "`.
@@ -47,5 +47,5 @@ Returns a human-readable string for the given numeric value.
 
 #### Example - Get bit-sized file size for 1024 bytes
 
-    Sizeable.filesize(1024, %{bits:true})
+    Sizeable.filesize(1024, [bits: true]})
     "8 Kb"
