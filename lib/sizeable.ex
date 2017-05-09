@@ -1,13 +1,12 @@
 defmodule Sizeable do
-
   @moduledoc """
   A library to make file sizes human-readable
   """
 
   require Logger
 
-  @bits ["b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb"]
-	@bytes ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+  @bits ~w(b Kb Mb Gb Tb Pb Eb Zb Yb)
+  @bytes ~w(B KB MB GB TB PB EB ZB YB)
 
   @doc """
   see `filesize(value, options)`
@@ -21,8 +20,8 @@ defmodule Sizeable do
     filesize(value, Map.to_list(options))
   end
 
-  def filesize(value,options) when is_bitstring(value) do
-    case value |> Integer.parse() do
+  def filesize(value, options) when is_bitstring(value) do
+    case Integer.parse(value) do
       {parsed, _rem} -> filesize(parsed, options)
       :error -> raise "Value is not a Number"
     end
@@ -36,12 +35,14 @@ defmodule Sizeable do
   def filesize(0.0, options) do
     spacer = Keyword.get(options, :spacer, " ")
     bits = Keyword.get(options, :bits, false)
+    output = Keyword.get(options, :output, :string)
 
     {:ok, unit} = case bits do
       true -> Enum.fetch(@bits, 0)
       false -> Enum.fetch(@bytes, 0)
     end
-    Enum.join([0,unit], spacer)
+
+    filesize_output(output, 0, unit, spacer)
   end
 
   @doc """
@@ -58,18 +59,19 @@ defmodule Sizeable do
   - `spacer`: the string that should be between the number and the unit. Defaults to `" "`.
   - `round`: the precision that the number should be rounded down to. Defaults to `2`.
   - `base`: the base for exponent calculation. `2` for binary-based numbers, any other Integer can be used. Defaults to `2`.
+  - `output`: the ouput format to be used, possible options are :string, :list, :map. Defaults to :string.
 
   ## Example - Get bit-sized file size for 1024 byte
 
-      Sizeable.filesize(1024, [bits: true])
-      "8 Kb"
+    Sizeable.filesize(1024, bits: true)
+    "8 Kb"
   """
-
   def filesize(value, options) when (is_float(value) and is_list(options)) do
     bits = Keyword.get(options, :bits, false)
     base = Keyword.get(options, :base, 2)
     spacer = Keyword.get(options, :spacer, " ")
     round = Keyword.get(options, :round, 2)
+    output = Keyword.get(options, :output, :string)
 
     ceil = if base > 2 do 1000 else 1024 end
     neg = value < 0
@@ -91,8 +93,7 @@ defmodule Sizeable do
     result = if Float.floor(result) == result do
       round result
     else
-      result
-      |> Float.round(round)
+      Float.round(result, round)
     end
 
     {:ok, unit} = case bits do
@@ -100,12 +101,12 @@ defmodule Sizeable do
       false -> Enum.fetch(@bytes, exponent)
     end
 
-    case neg do
-      true ->
-        "-" <> Enum.join([result,unit], spacer)
-      false ->
-        Enum.join([result,unit], spacer)
+    result = case neg do
+      true -> result * -1
+      false -> result
     end
+
+    filesize_output(output, result, unit, spacer)
   end
 
   def filesize(_value, options) when is_list(options) do
@@ -116,4 +117,12 @@ defmodule Sizeable do
     raise "Invalid Options Argument"
   end
 
+  def filesize_output(output, result, unit, spacer) do
+    case output do
+      :string -> Enum.join([result, unit], spacer)
+      :list -> [result, unit]
+      :map -> %{result: result, unit: unit}
+      _ -> raise "Invalid `#{output}` output value, possible options are :string, :list, :map"
+    end
+  end
 end
