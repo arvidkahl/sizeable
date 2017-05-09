@@ -21,7 +21,7 @@ defmodule Sizeable do
   end
 
   def filesize(value, options) when is_bitstring(value) do
-    case value |> Integer.parse() do
+    case Integer.parse(value) do
       {parsed, _rem} -> filesize(parsed, options)
       :error -> raise "Value is not a Number"
     end
@@ -93,8 +93,7 @@ defmodule Sizeable do
     result = if Float.floor(result) == result do
       round result
     else
-      result
-      |> Float.round(round)
+      Float.round(result, round)
     end
 
     {:ok, unit} = case bits do
