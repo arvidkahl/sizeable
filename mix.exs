@@ -3,7 +3,7 @@ defmodule Sizeable.Mixfile do
 
   def project do
     [app: :sizeable,
-     version: "1.0.1",
+     version: "1.0.2",
      elixir: "~> 1.1",
      description: "An Elixir library to make file sizes human-readable.",
      package: package(),
@@ -28,6 +28,9 @@ defmodule Sizeable.Mixfile do
   end
 
   defp deps do
-    [{:ex_doc, ">= 0.0.0", only: :dev}]
+    [
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:inch_ex, only: :docs}
+    ]
   end
 end

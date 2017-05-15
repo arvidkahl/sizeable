@@ -3,3 +3,6 @@ elixir:
   - 1.1
   - 1.2
   - 1.3
+after_script:
+  - mix deps.get --only docs
+  - MIX_ENV=docs mix inch.report
