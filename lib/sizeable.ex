@@ -39,10 +39,11 @@ defmodule Sizeable do
     bits = Keyword.get(options, :bits, false)
     output = Keyword.get(options, :output, :string)
 
-    {:ok, unit} = case bits do
-      true -> Enum.fetch(@bits, 0)
-      false -> Enum.fetch(@bytes, 0)
-    end
+    {:ok, unit} =
+      case bits do
+        true -> Enum.fetch(@bits, 0)
+        false -> Enum.fetch(@bytes, 0)
+      end
 
     filesize_output(output, 0, unit, spacer)
   end
@@ -73,45 +74,61 @@ defmodule Sizeable do
       "8 Kb"
 
   """
-  def filesize(value, options) when (is_float(value) and is_list(options)) do
+  def filesize(value, options) when is_float(value) and is_list(options) do
     bits = Keyword.get(options, :bits, false)
     base = Keyword.get(options, :base, 2)
     spacer = Keyword.get(options, :spacer, " ")
     round = Keyword.get(options, :round, 2)
     output = Keyword.get(options, :output, :string)
 
-    ceil = if base > 2 do 1000 else 1024 end
+    ceil =
+      if base > 2 do
+        1000
+      else
+        1024
+      end
+
     neg = value < 0
 
-    value = case neg do
-      true -> -value
-      false -> value
-    end
+    value =
+      case neg do
+        true -> -value
+        false -> value
+      end
 
-    value = if bits do 8 * value else value end
+    value =
+      if bits do
+        8 * value
+      else
+        value
+      end
 
-    {exponent, _rem} = :math.log(value)/:math.log(ceil)
-      |> Float.floor
-      |> Float.to_string
-      |> Integer.parse
+    {exponent, _rem} =
+      (:math.log(value) / :math.log(ceil))
+      |> Float.floor()
+      |> Float.to_string()
+      |> Integer.parse()
 
     result = Float.round(value / :math.pow(ceil, exponent), base)
 
-    result = if Float.floor(result) == result do
-      round result
-    else
-      Float.round(result, round)
-    end
+    result =
+      if Float.floor(result) == result do
+        round(result)
+      else
+        Float.round(result, round)
+      end
 
-    {:ok, unit} = case bits do
-      true -> Enum.fetch(@bits, exponent)
-      false -> Enum.fetch(@bytes, exponent)
-    end
+    {:ok, unit} =
+      case bits do
+        true -> Enum.fetch(@bits, exponent)
+        false -> Enum.fetch(@bytes, exponent)
+      end
 
-    result = case neg do
-      true -> result * -1
-      false -> result
-    end
+    result =
+      case neg do
+        true -> result * -1
+        false -> result
+      end
 
     filesize_output(output, result, unit, spacer)
   end

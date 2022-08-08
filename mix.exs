@@ -7,7 +7,7 @@ defmodule Sizeable.Mixfile do
     [
       app: :sizeable,
       version: "1.0.2",
-      elixir: "~> 1.1",
+      elixir: "~> 1.7",
       package: package(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -28,7 +28,7 @@ defmodule Sizeable.Mixfile do
       maintainers: ["Arvid Kahl"],
       licenses: ["MIT"],
       files: ["lib", "test", "mix.exs", "README*", "LICENSE*"],
-      links: %{"GitHub" => @source_url},
+      links: %{"GitHub" => @source_url}
     ]
   end
 
