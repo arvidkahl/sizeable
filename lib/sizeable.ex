@@ -18,7 +18,7 @@ defmodule Sizeable do
   end
 
   def filesize(value, options) when is_map(options) do
-    Logger.warn("Using maps for options is deprecated. Please use Keyword Lists.")
+    Logger.warning("Using maps for options is deprecated. Please use Keyword Lists.")
     filesize(value, Map.to_list(options))
   end
 
