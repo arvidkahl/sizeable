@@ -66,6 +66,8 @@ Sizeable.filesize(1024, output: :map)
 
 Read [Sizeable.filesize/2](https://hexdocs.pm/sizeable) for further usage details.
 
+<!-- MDOC !-->
+
 ## Copyright and License
 
 Copyright (c) 2016 Arvid Kahl

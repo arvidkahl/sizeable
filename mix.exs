@@ -28,7 +28,10 @@ defmodule Sizeable.Mixfile do
       maintainers: ["Arvid Kahl"],
       licenses: ["MIT"],
       files: ["lib", "test", "mix.exs", "README*", "LICENSE*"],
-      links: %{"GitHub" => @source_url},
+      links: %{
+        "Changelog" => "#{@source_url}/blob/master/CHANGELOG.md",
+        "GitHub" => @source_url
+      },
     ]
   end
 
