@@ -7,7 +7,7 @@ defmodule Sizeable.Mixfile do
     [
       app: :sizeable,
       version: "1.0.2",
-      elixir: "~> 1.1",
+      elixir: "~> 1.11",
       package: package(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
