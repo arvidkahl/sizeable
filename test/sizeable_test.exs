@@ -130,7 +130,7 @@ defmodule SizeableTest do
   end
 
   test "edgecase round" do
-    assert Sizeable.filesize(@edgecase, [round: 1]) == "1023 B"
+    assert Sizeable.filesize(@edgecase, round: 1) == "1023 B"
   end
 
   # Tests for byte values
@@ -171,8 +171,10 @@ defmodule SizeableTest do
   end
 
   test "ouput invalid" do
-    assert_raise RuntimeError, "Invalid `array` output value, possible options are :string, :list, :map", fn ->
-      Sizeable.filesize(@kilobyte, output: :array)
-    end
+    assert_raise RuntimeError,
+                 "Invalid `array` output value, possible options are :string, :list, :map",
+                 fn ->
+                   Sizeable.filesize(@kilobyte, output: :array)
+                 end
   end
 end
