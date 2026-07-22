@@ -17,36 +17,6 @@ defmodule Sizeable do
     filesize(value, [])
   end
 
-  def filesize(value, options) when is_map(options) do
-    Logger.warning("Using maps for options is deprecated. Please use Keyword Lists.")
-    filesize(value, Map.to_list(options))
-  end
-
-  def filesize(value, options) when is_bitstring(value) do
-    case Integer.parse(value) do
-      {parsed, _rem} -> filesize(parsed, options)
-      :error -> raise "Value is not a Number"
-    end
-  end
-
-  def filesize(value, options) when is_integer(value) do
-    {parsed, _rem} = value |> Integer.to_string() |> Float.parse()
-    filesize(parsed, options)
-  end
-
-  def filesize(0.0, options) do
-    spacer = Keyword.get(options, :spacer, " ")
-    bits = Keyword.get(options, :bits, false)
-    output = Keyword.get(options, :output, :string)
-
-    {:ok, unit} = case bits do
-      true -> Enum.fetch(@bits, 0)
-      false -> Enum.fetch(@bytes, 0)
-    end
-
-    filesize_output(output, 0, unit, spacer)
-  end
-
   @doc """
   Returns a human-readable string for the given numeric value.
 
@@ -73,6 +43,36 @@ defmodule Sizeable do
       "8 Kb"
 
   """
+  def filesize(value, options) when is_map(options) do
+    Logger.warning("Using maps for options is deprecated. Please use Keyword Lists.")
+    filesize(value, Map.to_list(options))
+  end
+
+  def filesize(value, options) when is_bitstring(value) do
+    case Integer.parse(value) do
+      {parsed, _rem} -> filesize(parsed, options)
+      :error -> raise "Value is not a Number"
+    end
+  end
+
+  def filesize(value, options) when is_integer(value) do
+    {parsed, _rem} = value |> Integer.to_string() |> Float.parse()
+    filesize(parsed, options)
+  end
+
+  def filesize(value, options) when value in [+0.0, -0.0] do
+    spacer = Keyword.get(options, :spacer, " ")
+    bits = Keyword.get(options, :bits, false)
+    output = Keyword.get(options, :output, :string)
+
+    {:ok, unit} = case bits do
+      true -> Enum.fetch(@bits, 0)
+      false -> Enum.fetch(@bytes, 0)
+    end
+
+    filesize_output(output, 0, unit, spacer)
+  end
+
   def filesize(value, options) when (is_float(value) and is_list(options)) do
     bits = Keyword.get(options, :bits, false)
     base = Keyword.get(options, :base, 2)
